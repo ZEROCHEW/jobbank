@@ -1,35 +1,32 @@
-function checkNID() {
-  let nid = (document.getElementById("nid").value).trim();
-  if(isNaN(nid)){
-	return false;
-  }else{
-	return true;
-  }
-}
+function validateForm() {
+    let nid = document.getElementById("nid").value.trim();
+    let fname = document.getElementById("fname").value.trim();
+    let lname = document.getElementById("lname").value.trim();
+    let workDays = document.getElementById("workDays").value.trim();
+    let genders = document.getElementsByName("genderRad");
 
-function checkWorkDays() {
-  let num = (document.getElementById("workDays").value).trim();
-  if (isNaN(num)) {
-    return false;
-  } else {
-	return true;
-  }
-}
+    let genderSelected = false;
+    for (let i = 0; i < genders.length; i++) {
+        if (genders[i].checked) { genderSelected = true; break; }
+    }
 
-function validateForm(){
-	if(!checkNID()){
-	  alert("Invalid value for National ID!");
-	  document.getElementById("nid").focus();
-	  return false;
-	}else{
-		if(!checkWorkDays()){
-		  alert("Invalid value for days of work!");
-		  document.getElementById("workDays").focus();
-		  return false;
-		}else{
-			total = payRateCalculate();
-			alert("Your weekly pay rate is "+total+" THB");
-			return false;
-		}
-	}
+    if (nid === "" || fname === "" || lname === "" || workDays === "" || !genderSelected) {
+        alert("กรุณากรอกข้อมูลให้ครบทุกช่อง");
+        return false;
+    }
+
+    if (isNaN(nid) || nid.length !== 13) {
+        alert("National ID ต้องเป็นตัวเลข 13 หลักเท่านั้น");
+        return false;
+    }
+
+    let days = parseInt(workDays);
+    if (isNaN(days) || days < 1 || days > 6) {
+        alert("ระบุจำนวนวันได้ตั้งแต่ 1-6 วันเท่านั้น");
+        return false;
+    }
+
+    let total = payRateCalculate();
+    alert("Your weekly pay rate is " + total + " THB");
+    return false; 
 }
